@@ -1,8 +1,7 @@
 @echo off
 REM ****************************************************************************
-REM * Copyright (c) 2018 by Onnet Systems, Inc.
 REM * Description: This build system is used to compile the Test Client source
-REM * Author(s): Shunmuga (shunmuga@onnetsystems.net)
+REM * Author(s): Shunmuga (ssundaramp@outlook.com)
 REM ****************************************************************************
 
 SETLOCAL

@@ -32,15 +32,11 @@ Light weight parser to parse HTTP Responses, URL and URI QueryString
 
 ### To Compile 
 
-g++ HttpResponseHeaderParser.cpp -c -o HttpResponseHeaderParser.o
-g++ UriQueryStringParser.cpp -c -o UriQueryStringParser.o
-g++ UrlParser.cpp -c -o UrlParser.o
-
-g++ usage.cpp HttpResponseHeaderParser.o UriQueryStringParser.o UrlParser.o
+./linbuild.sh
 
 ### To Run
 
-./a.out
+./objs/usage.exe
 
 ## In Windows
 ### To Compile
@@ -49,7 +45,7 @@ winbuild.bat
 
 ### To Run
 
-./usage.exe
+objs/usage.exe
 
 # Output
 ```
