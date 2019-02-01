@@ -14,32 +14,54 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file UriQueryStringParser.hpp
+  * @brief Declaration of UriQueryStringParser and its supported classes
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #include "CoreParser.hpp"
 
 #pragma once
 
-#ifndef _UriQueryStringParser_h_
-#define _UriQueryStringParser_h_
+#ifndef _UriQueryStringParser_hpp_
+#define _UriQueryStringParser_hpp_
 
 #ifdef __cplusplus
+
 namespace AKKU {
+
+/// @brief Declaration of UriQueryStringParser
 class UriQueryStringParser : public CoreParser
 {
-   public:
-      UriQueryStringParser();
-      ~UriQueryStringParser();
-      // Override Method
-      bool parse (const char* buff, int len);
+    public:
+        /// @brief Construct a new Uri Query String Parser object
+        UriQueryStringParser();
 
-   private:
-      bool validate(const char* buff, int &len);
-      bool parse ();
-      bool linebyline(int start, int &len);
-   private:
-      string data;
-};
-};
+        /// @brief Destroy the Uri Query String Parser object
+        ~UriQueryStringParser();
+
+        /// @brief Do the parsing functionality
+        /// @param[in] buff - input data
+        /// @param[in] len - length of the input data
+        /// @return true if call success, otherwise false
+        bool Parse(const char* buff, int len) final;
+
+    private:
+        bool Validate(const char* buff, int &len);
+        bool Parse ();
+        bool Linebyline(int start, int &len);
+
+    private:
+        string m_data;
+
+}; // class UriQueryStringParser
+
+}; // namespace AKKU
+
 #endif //__cplusplus
 
-#endif //_UriQueryStringParser_h_
+#endif //_UriQueryStringParser_hpp_
 

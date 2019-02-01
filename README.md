@@ -1,7 +1,7 @@
 
-                   AKKU Parser, Release 2.0.0
+                   AKKU::Parser, Release 2.0.0
 
-This is AKKU Parser, a C++ library for parsing HTTP Response Header
+This is AKKU::Parser, a C++ library for parsing HTTP Response Header
 and HTTP Request Query String, written by Shunmuga Sundaram.  It is
 a independent source which should not having any other thirdparty
 software references
@@ -14,12 +14,8 @@ it under the terms of the License contained in the file COPYING
 distributed with this package.  This license is the same as the
 Apache Consortium license.
 
-If you are building AKKU Parser, you need to run a makefile that
-generates the library akkuparser.a and also you will get a binary
-akkuparser with present testcode
 
-
-# AKKUParser
+# AKKU::Parser
 Light weight parser to parse HTTP Responses, URL and URI QueryString
 
 1. Easy to include anywhere

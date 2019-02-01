@@ -14,57 +14,103 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file HttpResponseHeaderParser.hpp
+  * @brief Declaration of HttpResponseHeaderParser and its supported classes
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #include "CoreParser.hpp"
 
 #pragma once
 
-#ifndef _HttpResponseHeaderParser_h_
-#define _HttpResponseHeaderParser_h_
+#ifndef _HttpResponseHeaderParser_hpp_
+#define _HttpResponseHeaderParser_hpp_
 
 #ifdef __cplusplus
 namespace AKKU {
+
+/// @brief Declaration of HttpResponseHeaderParser
 class HttpResponseHeaderParser : public CoreParser
 {
-   public:
-      HttpResponseHeaderParser();
-      ~HttpResponseHeaderParser();
-      // Override Method
-      bool parse (const char* buff, int len);
+    public:
+        /// @brief Construct a new Http Response Header Parser object
+        HttpResponseHeaderParser();
 
-      // For easy handling, below methods are used to get generic header fields
-      string getDate() {
-         return get("Date");
-      }
-      string getContentLength() {
-         return get("Content-Length");
-      }
-      string getContentType() {
-         return get("Content-Type");
-      }
-      string getProtocol() {
-         return get("Protocol");
-      }
-      string getProtocolVersion() {
-         return get("Protocol-Version");
-      }
-      string getStatusCode() {
-         return get("Status-Code");
-      }
-      string getServer() {
-         return get("Server");
-      }
-      string getConnection() {
-         return get("Connection");
-      }
-   private:
-      bool validate(const char* buff, int &len);
-      bool parse ();
-      bool linebyline(int start, int &len);
-   private:
-      string data;
-};
-};
+        /// @brief Destroy the Http Response Header Parser object
+        ~HttpResponseHeaderParser();
+
+        /// @brief Do the parsing functionality
+        /// @param[in] buff - input data
+        /// @param[in] len - length of the input data
+        /// @return true if call success, otherwise false
+        bool Parse(const char* buff, int len) final;
+
+        // For easy handling, below methods are used to get generic header fields
+
+        /// @brief Get the Date value
+        /// @return string 
+        string GetDate() {
+            return Get("Date");
+        }
+
+        /// @brief Get the Content Length
+        /// @return string 
+        string GetContentLength() {
+            return Get("Content-Length");
+        }
+
+        /// @brief Get the Content Type
+        /// @return string 
+        string GetContentType() {
+            return Get("Content-Type");
+        }
+
+        /// @brief Get the Protocol
+        /// @return string 
+        string GetProtocol() {
+            return Get("Protocol");
+        }
+
+        /// @brief Get the Protocol Version
+        /// @return string 
+        string GetProtocolVersion() {
+            return Get("Protocol-Version");
+        }
+
+        /// @brief Get the Status Code
+        /// @return string 
+        string GetStatusCode() {
+            return Get("Status-Code");
+        }
+
+        /// @brief Get the Server
+        /// @return string 
+        string GetServer() {
+            return Get("Server");
+        }
+
+        /// @brief Get the Connection
+        /// @return string 
+        string GetConnection() {
+            return Get("Connection");
+        }
+
+    private:
+        bool Validate(const char* buff, int &len);
+        bool Parse();
+        bool Linebyline(int start, int &len);
+
+    private:
+        string m_data;
+
+}; // class HttpResponseHeaderParser
+
+}; // namespace AKKU
+
 #endif //__cplusplus
 
-#endif //_HttpResponseHeaderParser_h_
+#endif //_HttpResponseHeaderParser_hpp_
 

@@ -14,117 +14,129 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file HttpResponseHeaderParser.cpp
+  * @brief Definition of HttpResponseHeaderParser and its supported methods
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #include "HttpResponseHeaderParser.hpp"
 
 using namespace AKKU;
 
-/// HttpResponseHeaderParser ////////////////////////////////////
 HttpResponseHeaderParser::HttpResponseHeaderParser()
 {
 }
+
 HttpResponseHeaderParser::~HttpResponseHeaderParser()
 {
 }
-bool HttpResponseHeaderParser::parse ()
+
+bool HttpResponseHeaderParser::Parse()
 {
-   if (this->data.empty()) {
-      return false;
-   }
-   int start = 0, len = 0;
-   string line, value, key;
-   // Parse first line
-   if (linebyline(start, len)) {
-      line.assign(this->data, start, len);
-      {
-         int start = 0, len;
+    if (m_data.empty()) {
+        return false;
+    }
 
-         len = line.find("/", start) - start;
-         value.assign(line, start, len);
-         push("Protocol", value);
-         start = start + len + 1/*skip /*/;
+    int start = 0, len = 0;
+    string line, value, key;
 
-         len = line.find(" ", start) - start;
-         value.assign(line, start, len);
-         push("Protocol-Version", value);
-         start = start + len + 1/*skip space*/;
+    // Parse first line
+    if (Linebyline(start, len)) {
+        line.assign(m_data, start, len);
+        {
+            int start = 0, len;
 
-         len = line.find(" ", start) - start;
-         value.assign(line, start, len);
-         push("Status-Code", value);
-      }
-      start = start + len + 2/*skip \r\n*/;
-   }
+            len = line.find("/", start) - start;
+            value.assign(line, start, len);
+            Push("Protocol", value);
+            start = start + len + 1/*skip / */;
 
-   // Parse further lines
-   while (linebyline(start, len)) {
-      line.assign(this->data, start, len);
-      {
-         int start = 0, len;
-         len = line.find(":", start) - start;
-         key.assign(line, start, len);
-         start = start + len + 1;
-         if (line[start] == ' ') {
-            start += 1;
-         }
-         len = line.find("\r\n", start) - start;
-         value.assign(line, start, len);
-         push(key, value);
-      }
-      start = start + len + 2/*skip \r\n*/;
-   }
+            len = line.find(" ", start) - start;
+            value.assign(line, start, len);
+            Push("Protocol-Version", value);
+            start = start + len + 1/*skip space*/;
 
-   return true;
-}
-bool HttpResponseHeaderParser::linebyline(int start, int &len)
-{
-   return 0 < (len = this->data.find("\r\n", start) - start) ? true : false;
-}
-bool HttpResponseHeaderParser::validate (const char* buff, int &len)
-{
-   int iterator = 0, terminates = 0;
-   while(terminates != 4 && buff[iterator] != '\0') {
-      terminates = (buff[iterator] == '\r' || buff[iterator] == '\n' || buff[iterator] == '\r' || buff[iterator] == '\n') ? terminates+1 : 0;
-      if (len != -1 && iterator > len) {
-         return false;
-      };
-      ++iterator;
-   }
-   len = iterator;
-   return true;
-}
-bool HttpResponseHeaderParser::parse (const char* buff, int len)
-{
-   // have to get the length by parsing the buff until reached to \r\n\r\n
-   if (len == 0 || (len < 0 && true != validate(buff, len))) {
-      return false;
-   }
-   this->data.assign(buff, len);
-   return this->parse();
+            len = line.find(" ", start) - start;
+            value.assign(line, start, len);
+            Push("Status-Code", value);
+        }
+        start = start + len + 2/*skip \r\n*/;
+    }
+
+    // Parse further lines
+    while (Linebyline(start, len)) {
+        line.assign(m_data, start, len);
+        {
+            int start = 0, len;
+            len = line.find(":", start) - start;
+            key.assign(line, start, len);
+            start = start + len + 1;
+            if (line[start] == ' ') {
+                start += 1;
+            }
+            len = line.find("\r\n", start) - start;
+            value.assign(line, start, len);
+            Push(key.c_str(), value);
+        }
+        start = start + len + 2/*skip \r\n*/;
+    }
+
+    return true;
 }
 
+bool HttpResponseHeaderParser::Linebyline(int start, int &len)
+{
+    return 0 < (len = m_data.find("\r\n", start) - start) ? true : false;
+}
 
-/// For C Style Users /////
+bool HttpResponseHeaderParser::Validate(const char* buff, int &len)
+{
+    int iterator = 0, terminates = 0;
+    while(terminates != 4 && buff[iterator] != '\0') {
+        terminates = (buff[iterator] == '\r' || buff[iterator] == '\n' || buff[iterator] == '\r' || buff[iterator] == '\n') ? terminates+1 : 0;
+        if (len != -1 && iterator > len) {
+            return false;
+        };
+        ++iterator;
+    }
+    len = iterator;
+    return true;
+}
+
+bool HttpResponseHeaderParser::Parse(const char* buff, int len)
+{
+    // have to get the length by parsing the buff until reached to \r\n\r\n
+    if (len == 0 || (len < 0 && true != Validate(buff, len))) {
+        return false;
+    }
+    m_data.assign(buff, len);
+    return this->Parse();
+}
+
+// For C Style Users /////
 AKKU_APIS_DEFINITION(CreateHttpResponseHeaderParser, void*, (const char *str, int len))
 {
-   HttpResponseHeaderParser *o = new HttpResponseHeaderParser();
-   if (false == o->parse(str, len)) {
-      delete o;
-      return NULL;
-   }
-   return static_cast<void*>(o);
+    HttpResponseHeaderParser *o = new HttpResponseHeaderParser();
+    if (false == o->Parse(str, len)) {
+        delete o;
+        return NULL;
+    }
+    return static_cast<void*>(o);
 }
 
 AKKU_APIS_DEFINITION(GetHttpResponseHeaderVariable, char*, (void* ctx, const char *name))
 {
-   if (ctx == NULL) return const_cast<char*>(string().c_str());
-   HttpResponseHeaderParser *o = static_cast<HttpResponseHeaderParser*>(ctx);
-   return const_cast<char*>(o->get(name).c_str());
+    if (ctx == NULL) return const_cast<char*>(string().c_str());
+    HttpResponseHeaderParser *o = static_cast<HttpResponseHeaderParser*>(ctx);
+    return const_cast<char*>(o->Get(name).c_str());
 }
 
 AKKU_APIS_DEFINITION(DestroyHttpResponseHeaderParser, void, (void* ctx))
 {
-   if (ctx == NULL) return;
-   HttpResponseHeaderParser *o = static_cast<HttpResponseHeaderParser*>(ctx);
-   delete o;
+    if (ctx == NULL) return;
+    HttpResponseHeaderParser *o = static_cast<HttpResponseHeaderParser*>(ctx);
+    delete o;
 }
-

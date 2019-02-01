@@ -14,6 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file usage.cpp
+  * @brief sample test code
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #include <stdio.h>
 
 #include "AKKUParser.hpp"
@@ -33,16 +41,16 @@ static void _ParseHTTPResponse()
 
     cout << "\n***********************************\n" << __FUNCTION__ << "\n\n" << "Input:\n" << header << "\n\nOutput:\n";
     AKKU::HttpResponseHeaderParser parser;
-    if (parser.parse(header, -1)) {
-        cout << "Protocol:" << parser.getProtocol() << endl;
-        cout << "Protocol-Version:" << parser.getProtocolVersion() << endl;
-        cout << "Status-Code:" << parser.getStatusCode() << endl;
-        cout << "Date:" << parser.getDate() << endl;
-        cout << "Server:" << parser.getServer() << endl;
-        cout << "Content-Length:" << parser.getContentLength() << endl;
-        cout << "Content-Type:" << parser.getContentType() << endl;
-        cout << "Connection:" << parser.getConnection() << endl;
-        cout << "Unknown:" << parser.get("Unknown") << endl;
+    if (parser.Parse(header, -1)) {
+        cout << "Protocol:" << parser.GetProtocol() << endl;
+        cout << "Protocol-Version:" << parser.GetProtocolVersion() << endl;
+        cout << "Status-Code:" << parser.GetStatusCode() << endl;
+        cout << "Date:" << parser.GetDate() << endl;
+        cout << "Server:" << parser.GetServer() << endl;
+        cout << "Content-Length:" << parser.GetContentLength() << endl;
+        cout << "Content-Type:" << parser.GetContentType() << endl;
+        cout << "Connection:" << parser.GetConnection() << endl;
+        cout << "Unknown:" << parser.Get("Unknown") << endl;
     } else {
         cout << "Parsing failed..." << endl;
     }
@@ -54,11 +62,11 @@ static void _ParseUriQueryString()
 
     cout << "\n***********************************\n" << __FUNCTION__ << "\n\n" << "Input:\n" << uri << "\n\nOutput:\n";
     AKKU::UriQueryStringParser parser;
-    if (parser.parse(uri, -1)) {
-        cout << "name:" << parser.get("name") << endl;
-        cout << "age:" << parser.get("age") << endl;
-        cout << "role:" << parser.get("role") << endl;
-        cout << "experience:" << parser.get("experience") << endl;
+    if (parser.Parse(uri, -1)) {
+        cout << "name:" << parser.Get("name") << endl;
+        cout << "age:" << parser.Get("age") << endl;
+        cout << "role:" << parser.Get("role") << endl;
+        cout << "experience:" << parser.Get("experience") << endl;
     } else {
         cout << "Parsing failed..." << endl;
     }
@@ -70,17 +78,21 @@ static void _ParseUrl()
 
     cout << "\n***********************************\n" << __FUNCTION__ << "\n\n" << "Input:\n" << url << "\n\nOutput:\n";
     AKKU::UrlParser parser;
-    if (parser.parse(url, -1)) {
-        cout << "Protocol:" << parser.getProtocol() << endl;
-        cout << "HostName:" << parser.getHostName() << endl;
-        cout << "Path:" << parser.getPath() << endl;
-        cout << "QueryString:" << parser.getQueryString() << endl;
-        cout << "HashValue:" << parser.getHashValue() << endl;
+    if (parser.Parse(url, -1)) {
+        cout << "Protocol:" << parser.GetProtocol() << endl;
+        cout << "HostName:" << parser.GetHostName() << endl;
+        cout << "Path:" << parser.GetPath() << endl;
+        cout << "QueryString:" << parser.GetQueryString() << endl;
+        cout << "HashValue:" << parser.GetHashValue() << endl;
     } else {
         cout << "Parsing failed..." << endl;
     }
 }
 
+/// @brief Main entry
+/// @param[in] argc - argument count
+/// @param[in] argv - argument values
+/// @return error value
 int main(int argc, char** argv)
 {
     _ParseHTTPResponse();

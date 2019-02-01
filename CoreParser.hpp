@@ -14,6 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file CoreParser.hpp
+  * @brief Declaration of CoreParser and its supported classes
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #ifdef __cplusplus
 #include <iostream>
 #include <map>
@@ -21,38 +29,72 @@ limitations under the License.
 
 #pragma once
 
-#ifndef _CoreParser_h_
-#define _CoreParser_h_
+#ifndef _CoreParser_hpp_
+#define _CoreParser_hpp_
 
 #define AKKU_APIS_DEFINITION(_API_, _RET_, _ARG_) extern "C" _RET_ AKKU_##_API_ _ARG_
 
 using namespace std;
+
 namespace AKKU {
+
+/// @brief Declaration of CoreParse abstract class
 class CoreParser
 {
-   public:
-      CoreParser() {}
-      virtual ~CoreParser() {
-         clear();
-      }
-      // Override with your requirement
-      virtual bool parse (const char* buff, int len) = 0;
-      bool push(const string key, const string value) {
-         elements[key] = value;
-         return true;
-      }
-      const string get(const string key) {
-         return elements[key];
-      }
-      bool clear() {
-         elements.clear();
-         return true;
-      }
-   private:
-      map<string, string> elements;
-};
-};
-#endif //_CoreParser_h_
+    public:
+        /// @brief Construct a new Core Parser object
+        CoreParser() {}
+
+        /// @brief Destroy the Core Parser object
+        virtual ~CoreParser() {
+            Clear();
+        }
+
+        /// @brief Do the parsing functionality which should be implemented in all the derived classess
+        /// @param[in] buff - input data
+        /// @param[in] len - length of the input data
+        /// @return true if call success, otherwise false
+        virtual bool Parse (const char* buff, int len) = 0;
+
+        /// @brief Method to push the key-value pair into the storage container
+        /// @param[in] key - key of the pair
+        /// @param[in] value - value of the pair
+        /// @return true if call success, otherwise false
+        bool Push(const char* key, string& value) {
+            m_elements[key] = value;
+            return true;
+        }
+
+        /// @brief Method to push the key-value pair into the storage container
+        /// @param[in] key - key of the pair
+        /// @param[in] value - value of the pair
+        /// @return true if call success, otherwise false
+        bool Push(const char* key, const char* value) {
+            string v = value;
+            return Push(key, v);
+        }
+
+        /// @brief Method to retrieve the value from the given key
+        /// @param[in] key - input key
+        /// @return value of the key if present, otherwise empty string
+        const string Get(const char* key) {
+            return m_elements[key];
+        }
+
+        /// @brief Flush the storage containter
+        /// @return true if call success, otherwise false
+        bool Clear() {
+            m_elements.clear();
+            return true;
+        }
+
+    private:
+        map<string, string> m_elements;
+}; // class CoreParser
+
+}; // namespace AKKU
+
+#endif //_CoreParser_hpp_
 
 #endif //__cplusplus
 

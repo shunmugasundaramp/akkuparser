@@ -14,6 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+  *
+  * @file UrlParser.hpp
+  * @brief Declaration of UrlParser and its supported classes
+  * @author Shunmuga (ssundaramp@outlook.com)
+  *
+  */
+
 #include "CoreParser.hpp"
 
 #pragma once
@@ -22,39 +30,68 @@ limitations under the License.
 #define _UrlParser_h_
 
 #ifdef __cplusplus
+
 namespace AKKU {
+
+/// @brief Declaration of UrlParser
 class UrlParser : public CoreParser
 {
-   public:
-      UrlParser();
-      ~UrlParser();
-      // Override Method
-      bool parse (const char* buff, int len);
+    public:
+        /// @brief Construct a new Url Parser
+        UrlParser();
 
-      // For easy handling, below methods are used to get generic header fields
-      string getProtocol() {
-         return get("protocol");
-      }
-      string getHostName() {
-         return get("hostname");
-      }
-      string getPath() {
-         return get("path");
-      }
-      string getQueryString() {
-         return get("query");
-      }
-      string getHashValue() {
-         return get("hash");
-      }
+        /// @brief Destroy the Url Parser
+        ~UrlParser();
 
-   private:
-      bool validate(const char* buff, int &len);
-      bool parse ();
-   private:
-      string data;
-};
-};
+        /// @brief Do the parsing functionality
+        /// @param[in] buff - input data
+        /// @param[in] len - length of the input data
+        /// @return true if call success, otherwise false
+        bool Parse(const char* buff, int len) final;
+
+        // For easy handling, below methods are used to get generic header fields
+
+        /// @brief Get the Protocol
+        /// @return string 
+        string GetProtocol() {
+            return Get("protocol");
+        }
+
+        /// @brief Get the Host Name
+        /// @return string 
+        string GetHostName() {
+            return Get("hostname");
+        }
+
+        /// @brief Get the Path
+        /// @return string 
+        string GetPath() {
+            return Get("path");
+        }
+
+        /// @brief Get the Query String
+        /// @return string 
+        string GetQueryString() {
+            return Get("query");
+        }
+
+        /// @brief Get the Hash Value
+        /// @return string 
+        string GetHashValue() {
+            return Get("hash");
+        }
+
+    private:
+        bool Validate(const char* buff, int &len);
+        bool Parse ();
+
+    private:
+        string m_data;
+
+}; // class UrlParser
+
+}; // namespace AKKU
+
 #endif //__cplusplus
 
 #endif //_UrlParser_h_
